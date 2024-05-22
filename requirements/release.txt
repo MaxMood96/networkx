@@ -1,3 +1,4 @@
 build>=0.9
 twine>=4.0
 wheel>=0.38
+requests>=2.32.0 # not directly required, pinned by Snyk to avoid a vulnerability
