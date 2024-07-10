@@ -5,3 +5,4 @@ numpydoc>=1.5
 pillow>=9.2
 nb2plots>=0.6
 texext>=0.6.7
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
