@@ -3,6 +3,7 @@ import random
 import pytest
 
 import networkx as nx
+from networkx.classes.tests import dispatch_interface
 
 np = pytest.importorskip("numpy")
 pytest.importorskip("scipy")
