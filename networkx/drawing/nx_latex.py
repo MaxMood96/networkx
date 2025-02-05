@@ -8,7 +8,7 @@ Usually, you will want the drawing to appear in a figure environment so
 you use ``to_latex(G, caption="A caption")``. If you want the raw
 drawing commands without a figure environment use :func:`to_latex_raw`.
 And if you want to write to a file instead of just returning the latex
-code as a string, use ``write_latex(G, "filname.tex", caption="A caption")``.
+code as a string, use ``write_latex(G, "filename.tex", caption="A caption")``.
 
 To construct a figure with subfigures for each graph to be shown, provide
 ``to_latex`` or ``write_latex`` a list of graphs, a list of subcaptions,
@@ -126,6 +126,7 @@ TikZ:          https://tikz.dev/
 
 TikZ options details:   https://tikz.dev/tikz-actions
 """
+
 import numbers
 import os
 
@@ -334,7 +335,7 @@ def to_latex(
 
     The TikZ drawing utility in LaTeX is used to draw the graph(s).
     If `Gbunch` is a graph, it is drawn in a figure environment.
-    If `Gbunch` is an iterable of graphs, each is drawn in a subfigure envionment
+    If `Gbunch` is an iterable of graphs, each is drawn in a subfigure environment
     within a single figure environment.
 
     If `as_document` is True, the figure is wrapped inside a document environment
@@ -397,7 +398,7 @@ def to_latex(
     n_rows : int
         The number of rows of subfigures to arrange for multiple graphs
     as_document : bool
-        Whether to wrap the latex code in a document envionment for compiling
+        Whether to wrap the latex code in a document environment for compiling
     document_wrapper : formatted text string with variable ``content``.
         This text is called to evaluate the content embedded in a document
         environment with a preamble setting up TikZ.
@@ -439,7 +440,7 @@ def to_latex(
         size = 1 / n_rows
 
         N = len(Gbunch)
-        if isinstance(pos, (str, dict)):
+        if isinstance(pos, str | dict):
             pos = [pos] * N
         if sub_captions is None:
             sub_captions = [""] * N
@@ -494,7 +495,7 @@ def write_latex(Gbunch, path, **options):
     Gbunch : NetworkX graph or iterable of NetworkX graphs
         If Gbunch is a graph, it is drawn in a figure environment.
         If Gbunch is an iterable of graphs, each is drawn in a subfigure
-        envionment within a single figure environment.
+        environment within a single figure environment.
     path : filename
         Filename or file handle to write to
     options : dict
@@ -550,7 +551,7 @@ def write_latex(Gbunch, path, **options):
             n_rows : int
                 The number of rows of subfigures to arrange for multiple graphs
             as_document : bool
-                Whether to wrap the latex code in a document envionment for compiling
+                Whether to wrap the latex code in a document environment for compiling
             document_wrapper : formatted text string with variable ``content``.
                 This text is called to evaluate the content embedded in a document
                 environment with a preamble setting up the TikZ syntax.

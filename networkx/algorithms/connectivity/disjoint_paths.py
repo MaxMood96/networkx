@@ -1,4 +1,5 @@
 """Flow based node and edge disjoint paths."""
+
 import networkx as nx
 
 # Define the default maximum flow function to use for the underlying
@@ -19,6 +20,10 @@ from .utils import build_auxiliary_edge_connectivity, build_auxiliary_node_conne
 __all__ = ["edge_disjoint_paths", "node_disjoint_paths"]
 
 
+@nx._dispatchable(
+    graphs={"G": 0, "auxiliary?": 5},
+    preserve_edge_attrs={"auxiliary": {"capacity": float("inf")}},
+)
 def edge_disjoint_paths(
     G, s, t, flow_func=None, cutoff=None, auxiliary=None, residual=None
 ):
@@ -173,9 +178,12 @@ def edge_disjoint_paths(
 
     # Compute maximum flow between source and target. Flow functions in
     # NetworkX return a residual network.
-    kwargs = dict(
-        capacity="capacity", residual=residual, cutoff=cutoff, value_only=True
-    )
+    kwargs = {
+        "capacity": "capacity",
+        "residual": residual,
+        "cutoff": cutoff,
+        "value_only": True,
+    }
     if flow_func is preflow_push:
         del kwargs["cutoff"]
     if flow_func is shortest_augmenting_path:
@@ -223,6 +231,11 @@ def edge_disjoint_paths(
             paths_found += 1
 
 
+@nx._dispatchable(
+    graphs={"G": 0, "auxiliary?": 5},
+    preserve_node_attrs={"auxiliary": {"id": None}},
+    preserve_graph_attrs={"auxiliary"},
+)
 def node_disjoint_paths(
     G, s, t, flow_func=None, cutoff=None, auxiliary=None, residual=None
 ):
@@ -369,7 +382,12 @@ def node_disjoint_paths(
     else:
         cutoff = min(cutoff, possible)
 
-    kwargs = dict(flow_func=flow_func, residual=residual, auxiliary=H, cutoff=cutoff)
+    kwargs = {
+        "flow_func": flow_func,
+        "residual": residual,
+        "auxiliary": H,
+        "cutoff": cutoff,
+    }
 
     # The edge disjoint paths in the auxiliary digraph correspond to the node
     # disjoint paths in the original graph.
