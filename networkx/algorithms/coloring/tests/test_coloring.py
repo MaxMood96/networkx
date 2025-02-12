@@ -1,6 +1,4 @@
-"""Greedy coloring test suite.
-
-"""
+"""Greedy coloring test suite."""
 
 import itertools
 
@@ -446,13 +444,13 @@ class TestColoring:
             )
 
             for u in node_iterator:
-                # Set to keep track of colors of neighbours
-                neighbour_colors = {
+                # Set to keep track of colors of neighbors
+                nbr_colors = {
                     aux_colored_nodes[v] for v in G[u] if v in aux_colored_nodes
                 }
                 # Find the first unused color.
                 for color in itertools.count():
-                    if color not in neighbour_colors:
+                    if color not in nbr_colors:
                         break
                 aux_colored_nodes[u] = color
                 color_assignments.append((u, color))
@@ -837,12 +835,12 @@ def check_state(L, N, H, F, C):
     s = len(C[0])
     num_colors = len(C.keys())
 
-    assert all(u in L[v] for u in L.keys() for v in L[u])
-    assert all(F[u] != F[v] for u in L.keys() for v in L[u])
-    assert all(len(L[u]) < num_colors for u in L.keys())
+    assert all(u in L[v] for u in L for v in L[u])
+    assert all(F[u] != F[v] for u in L for v in L[u])
+    assert all(len(L[u]) < num_colors for u in L)
     assert all(len(C[x]) == s for x in C)
-    assert all(H[(c1, c2)] >= 0 for c1 in C.keys() for c2 in C.keys())
-    assert all(N[(u, F[u])] == 0 for u in F.keys())
+    assert all(H[(c1, c2)] >= 0 for c1 in C for c2 in C)
+    assert all(N[(u, F[u])] == 0 for u in F)
 
 
 def max_degree(G):

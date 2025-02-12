@@ -1,6 +1,7 @@
 """
 Graph isomorphism functions.
 """
+
 import networkx as nx
 from networkx.exception import NetworkXError
 
@@ -12,6 +13,7 @@ __all__ = [
 ]
 
 
+@nx._dispatchable(graphs={"G1": 0, "G2": 1})
 def could_be_isomorphic(G1, G2):
     """Returns False if graphs are definitely not isomorphic.
     True does NOT guarantee isomorphism.
@@ -56,9 +58,24 @@ def could_be_isomorphic(G1, G2):
     return True
 
 
-graph_could_be_isomorphic = could_be_isomorphic
+def graph_could_be_isomorphic(G1, G2):
+    """
+    .. deprecated:: 3.5
+
+       `graph_could_be_isomorphic` is a deprecated alias for `could_be_isomorphic`.
+       Use `could_be_isomorphic` instead.
+    """
+    import warnings
+
+    warnings.warn(
+        "graph_could_be_isomorphic is deprecated, use `could_be_isomorphic` instead.",
+        category=DeprecationWarning,
+        stacklevel=2,
+    )
+    return could_be_isomorphic(G1, G2)
 
 
+@nx._dispatchable(graphs={"G1": 0, "G2": 1})
 def fast_could_be_isomorphic(G1, G2):
     """Returns False if graphs are definitely not isomorphic.
 
@@ -96,9 +113,24 @@ def fast_could_be_isomorphic(G1, G2):
     return True
 
 
-fast_graph_could_be_isomorphic = fast_could_be_isomorphic
+def fast_graph_could_be_isomorphic(G1, G2):
+    """
+    .. deprecated:: 3.5
+
+       `fast_graph_could_be_isomorphic` is a deprecated alias for
+       `fast_could_be_isomorphic`. Use `fast_could_be_isomorphic` instead.
+    """
+    import warnings
+
+    warnings.warn(
+        "fast_graph_could_be_isomorphic is deprecated, use fast_could_be_isomorphic instead",
+        category=DeprecationWarning,
+        stacklevel=2,
+    )
+    return fast_could_be_isomorphic(G1, G2)
 
 
+@nx._dispatchable(graphs={"G1": 0, "G2": 1})
 def faster_could_be_isomorphic(G1, G2):
     """Returns False if graphs are definitely not isomorphic.
 
@@ -128,9 +160,28 @@ def faster_could_be_isomorphic(G1, G2):
     return True
 
 
-faster_graph_could_be_isomorphic = faster_could_be_isomorphic
+def faster_graph_could_be_isomorphic(G1, G2):
+    """
+    .. deprecated:: 3.5
+
+       `faster_graph_could_be_isomorphic` is a deprecated alias for
+       `faster_could_be_isomorphic`. Use `faster_could_be_isomorphic` instead.
+    """
+    import warnings
+
+    warnings.warn(
+        "faster_graph_could_be_isomorphic is deprecated, use faster_could_be_isomorphic instead",
+        category=DeprecationWarning,
+        stacklevel=2,
+    )
+    return faster_could_be_isomorphic(G1, G2)
 
 
+@nx._dispatchable(
+    graphs={"G1": 0, "G2": 1},
+    preserve_edge_attrs="edge_match",
+    preserve_node_attrs="node_match",
+)
 def is_isomorphic(G1, G2, node_match=None, edge_match=None):
     """Returns True if the graphs G1 and G2 are isomorphic and False otherwise.
 
