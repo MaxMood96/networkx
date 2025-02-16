@@ -41,35 +41,15 @@ Todo
 
 Make sure to review ``networkx/conftest.py`` after removing deprecated code.
 
-Version 3.0
+Version 3.6
 ~~~~~~~~~~~
+* Remove ``compute_v_structures`` from ``algorithms/dag.py``.
+* Remove ``link`` kwarg from ``readwrite/json_graph/node_link.py``;
+  Remove the ``FutureWarning`` re: the default value of ``edges`` and change the
+  default value to ``"edges"``.
 
-* In ``readwrite/gml.py`` remove ``literal_stringizer`` and related tests.
-* In ``readwrite/gml.py`` remove ``literal_destringizer`` and related tests.
-* Remove ``copy`` method in the coreview Filtered-related classes and related tests.
-* In ``algorithms/link_analysis/pagerank_alg.py`` replace ``pagerank`` with ``pagerank_scipy``.
-* In ``algorithms/link_analysis/pagerank_alg.py`` rename ``pagerank_numpy`` as ``_pagerank_numpy``.
-* In ``convert_matrix.py`` remove ``order`` kwarg from ``to_pandas_edgelist`` and docstring
-* In ``algorithms/operators/binary.py`` remove ``name`` kwarg from ``union`` and docstring.
-* In ``algorithms/link_analysis/pagerank_alg.py``, remove the
-  ``np.asmatrix`` wrappers on the return values of ``google_matrix`` and remove
-  the associated FutureWarning.
-* In ``linalg/attrmatrix.py`` remove the FutureWarning, update the
-  return type by removing ``np.asmatrix``, and update the docstring to
-  reflect that the function returns a ``numpy.ndarray`` instance.
-* In ``algorithms/distance_measures.py`` remove ``extrema_bounding``.
-* In ``algorithms/matching.py``, remove parameter ``maxcardinality`` from ``min_weight_matching``.
-
-
-Version 3.2
+Version 3.7
 ~~~~~~~~~~~
-* In ``generators/directed.py`` remove the ``create_using`` keyword argument
-  for the ``scale_free_graph`` function.
-* Remove pydot functionality ``drawing/nx_pydot.py``, if pydot is still not being maintained. See #5723
-* In ``readwrite/json_graph/node_link.py`` remove the ``attrs` keyword code 
-  and docstring in ``node_link_data`` and ``node_link_graph``. Also the associated tests.
-
-Version 3.3
-~~~~~~~~~~~
-* Remove the ``forest_str`` function from ``readwrite/text.py``. Replace
-  existing usages with ``write_network_text``.
+* Remove ``graph_could_be_isomorphic``, ``fast_graph_could_be_isomorphic``, and
+  ``faster_graph_could_be_isomorphic``, from
+  ``networkx.algorithms.isomorphism.isomorph``.
