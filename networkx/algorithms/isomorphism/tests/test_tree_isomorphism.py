@@ -1,12 +1,22 @@
 import random
 import time
 
+import pytest
+
 import networkx as nx
 from networkx.algorithms.isomorphism.tree_isomorphism import (
     rooted_tree_isomorphism,
     tree_isomorphism,
 )
 from networkx.classes.function import is_directed
+
+
+@pytest.mark.parametrize("graph_constructor", (nx.DiGraph, nx.MultiGraph))
+def test_tree_isomorphism_raises_on_directed_and_multigraphs(graph_constructor):
+    t1 = graph_constructor([(0, 1)])
+    t2 = graph_constructor([(1, 2)])
+    with pytest.raises(nx.NetworkXNotImplemented):
+        nx.isomorphism.tree_isomorphism(t1, t2)
 
 
 # have this work for graph
@@ -52,8 +62,6 @@ def check_isomorphism(t1, t2, isomorphism):
 
 
 def test_hardcoded():
-    print("hardcoded test")
-
     # define a test problem
     edges_1 = [
         ("a", "b"),
@@ -132,7 +140,7 @@ def test_hardcoded():
     isomorphism = sorted(rooted_tree_isomorphism(t1, root1, t2, root2))
 
     # is correct by hand
-    assert (isomorphism == isomorphism1) or (isomorphism == isomorphism2)
+    assert isomorphism in (isomorphism1, isomorphism2)
 
     # check algorithmically
     assert check_isomorphism(t1, t2, isomorphism)
@@ -149,7 +157,7 @@ def test_hardcoded():
     isomorphism = sorted(rooted_tree_isomorphism(t1, root1, t2, root2))
 
     # is correct by hand
-    assert (isomorphism == isomorphism1) or (isomorphism == isomorphism2)
+    assert isomorphism in (isomorphism1, isomorphism2)
 
     # check algorithmically
     assert check_isomorphism(t1, t2, isomorphism)
@@ -170,17 +178,17 @@ def random_swap(t):
 def positive_single_tree(t1):
     assert nx.is_tree(t1)
 
-    nodes1 = [n for n in t1.nodes()]
+    nodes1 = list(t1.nodes())
     # get a random permutation of this
     nodes2 = nodes1.copy()
     random.shuffle(nodes2)
 
     # this is one isomorphism, however they may be multiple
     # so we don't necessarily get this one back
-    someisomorphism = [(u, v) for (u, v) in zip(nodes1, nodes2)]
+    someisomorphism = list(zip(nodes1, nodes2))
 
     # map from old to new
-    map1to2 = {u: v for (u, v) in someisomorphism}
+    map1to2 = dict(someisomorphism)
 
     # get the edges with the transformed names
     edges2 = [random_swap((map1to2[u], map1to2[v])) for (u, v) in t1.edges()]
@@ -207,22 +215,17 @@ def positive_single_tree(t1):
 # larger values run slow down significantly
 # as the number of trees grows rapidly
 def test_positive(maxk=14):
-    print("positive test")
-
     for k in range(2, maxk + 1):
         start_time = time.time()
         trial = 0
         for t in nx.nonisomorphic_trees(k):
             positive_single_tree(t)
             trial += 1
-        print(k, trial, time.time() - start_time)
 
 
 # test the trivial case of a single node in each tree
 # note that nonisomorphic_trees doesn't work for k = 1
 def test_trivial():
-    print("trivial test")
-
     # back to an undirected graph
     t1 = nx.Graph()
     t1.add_node("a")
@@ -242,8 +245,6 @@ def test_trivial():
 # test another trivial case where the two graphs have
 # different numbers of nodes
 def test_trivial_2():
-    print("trivial test 2")
-
     edges_1 = [("a", "b"), ("a", "c")]
 
     edges_2 = [("v", "y")]
@@ -269,8 +270,6 @@ def test_trivial_2():
 # larger values run slow down significantly
 # as the number of trees grows rapidly
 def test_negative(maxk=11):
-    print("negative test")
-
     for k in range(4, maxk + 1):
         test_trees = list(nx.nonisomorphic_trees(k))
         start_time = time.time()
@@ -279,4 +278,3 @@ def test_negative(maxk=11):
             for j in range(i + 1, len(test_trees)):
                 trial += 1
                 assert tree_isomorphism(test_trees[i], test_trees[j]) == []
-        print(k, trial, time.time() - start_time)
