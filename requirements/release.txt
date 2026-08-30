@@ -4,3 +4,4 @@ build>=0.10
 twine>=4.0
 wheel>=0.40
 changelist==0.5
+urllib3>=2.5.0 # not directly required, pinned by Snyk to avoid a vulnerability
